@@ -1,0 +1,14 @@
+Package: jheem
+Type: Package
+Title: Executes the JHEEM (Johns Hopkins Epidemiological and Economic Model) - a compartmental model of HIV
+Version: 1.0
+Author: Anthony Fojot
+Maintainer: Anthony Fojo <anthony.fojo@jhmi.edu>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp (>= 0.12.17), reshape2, ggplot2, odeintr
+LinkingTo: Rcpp
+RoxygenNote: 7.1.1
