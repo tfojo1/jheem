@@ -6,7 +6,7 @@ Author: Anthony Fojot
 Maintainer: Anthony Fojo <anthony.fojo@jhmi.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL
 Encoding: UTF-8
 LazyData: true
 Imports: Rcpp (>= 0.12.17), reshape2, ggplot2, odeintr
