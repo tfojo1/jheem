@@ -30,6 +30,7 @@ hydrate.ode.results <- function(ode.results,
     rv$continuum = jheem$continuum.of.care
     rv$cd4 = jheem$cd4.strata
     rv$hiv.subsets = jheem$hiv.subsets
+    rv$first.diagnosed.continuum.states = jheem$FIRST_DIAGNOSED_CONTINUUM_STATES
     rv$diagnosed.continuum.states = jheem$DIAGNOSED_CONTINUUM_STATES
 
     ##-- SET UP DIMNAMES --##

@@ -22,7 +22,8 @@ initialize.jheem <- function(age.cutoffs=NULL,
                              cd4.strata=NULL,
                              hiv.subsets=NULL,
                              nonhiv.subsets=NULL,
-                             diagnosed.hiv.continuum.states=NULL,
+                             first.diagnosed.hiv.continuum.states=NULL,
+                             all.diagnosed.hiv.continuum.states=first.diagnosed.hiv.continuum.states,
                              transmission.route.names='sexual',
                              verbose=T,
                              new.diagnoses.keep.dimensions=c('age','race','subpopulation','sex','risk')
@@ -154,35 +155,63 @@ initialize.jheem <- function(age.cutoffs=NULL,
 
     ##-- SET-UP FOR TRACKED TRANSITIONS --##
     jheem = init.transition.tracking(jheem)
-    if (is.null(diagnosed.hiv.continuum.states))
+    jheem$DIAGNOSED_CONTINUUM_STATES = jheem$UNDIAGNOSED_CONTINUUM_STATES =
+        jheem$FIRST_DIAGNOSED_CONTINUUM_STATES = jheem$ALL_DIAGNOSED_HIV_CONTINUUM_STATES = NULL
+
+
+
+    if (is.null(first.diagnosed.hiv.continuum.states))
     {
-        print("Unable to track new diagnoses with only 'one continuum state'diagnosed.hiv.continuum.states' is NULL")
-        jheem$DIAGNOSED_CONTINUUM_STATES = jheem$UNDIAGNOSED_CONTINUUM_STATES = NULL
+        print("Unable to track new diagnoses when 'first.diagnosed.hiv.continuum.states' is NULL")
     }
     else
     {
-        diagnosed.hiv.continuum.states = unique(diagnosed.hiv.continuum.states)
-        invalid.continuum.states = diagnosed.hiv.continuum.states[sapply(diagnosed.hiv.continuum.states, function(state){
+        first.diagnosed.hiv.continuum.states = unique(first.diagnosed.hiv.continuum.states)
+        invalid.continuum.states = first.diagnosed.hiv.continuum.states[sapply(first.diagnosed.hiv.continuum.states, function(state){
             all(jheem$continuum.of.care != state)
         })]
 
         if (length(invalid.continuum.states)>0)
-            stop(paste0("The following 'diagnosed.continuum.states' were not actually specified as part of the HIV continuum of care: ",
+            stop(paste0("The following 'first.diagnosed.continuum.states' were not actually specified as part of the HIV continuum of care: ",
                         paste0("'", invalid.continuum.states, "'", collapse=', ')))
 
-        jheem$DIAGNOSED_CONTINUUM_STATES = diagnosed.hiv.continuum.states
-        if (length(diagnosed.hiv.continuum.states)==jheem$parameters$NUM_CONTINUUM_STATES)
+        jheem$FIRST_DIAGNOSED_CONTINUUM_STATES = first.diagnosed.hiv.continuum.states
+    }
+
+    all.diagnosed.hiv.continuum.states = union(first.diagnosed.hiv.continuum.states, all.diagnosed.hiv.continuum.states)
+    if (is.null(all.diagnosed.hiv.continuum.states))
+    {
+        print("Unable to track new diagnoses when 'all.diagnosed.hiv.continuum.states' is NULL")
+    }
+    else
+    {
+        all.diagnosed.hiv.continuum.states = unique(all.diagnosed.hiv.continuum.states)
+        invalid.continuum.states = all.diagnosed.hiv.continuum.states[sapply(all.diagnosed.hiv.continuum.states, function(state){
+            all(jheem$continuum.of.care != state)
+        })]
+
+        if (length(invalid.continuum.states)>0)
+            stop(paste0("The following 'all.diagnosed.continuum.states' were not actually specified as part of the HIV continuum of care: ",
+                        paste0("'", invalid.continuum.states, "'", collapse=', ')))
+
+        jheem$DIAGNOSED_CONTINUUM_STATES = all.diagnosed.hiv.continuum.states
+    }
+
+    if (!is.null(jheem$FIRST_DIAGNOSED_CONTINUUM_STATES) && !is.null(jheem$DIAGNOSED_CONTINUUM_STATES))
+    {
+
+        if (length(jheem$DIAGNOSED_CONTINUUM_STATES)==jheem$parameters$NUM_CONTINUUM_STATES)
         {
-            print("All HIV continuum of care states were designated as diagnosed states. Unable to track new diagnoses")
+            print("All HIV continuum of care states were designated as first diagnosed states. Unable to track new diagnoses")
             jheem$UNDIAGNOSED_CONTINUUM_STATES = NULL
         }
         else
-            jheem$UNDIAGNOSED_CONTINUUM_STATES = setdiff(jheem$continuum.of.care, diagnosed.hiv.continuum.states)
+            jheem$UNDIAGNOSED_CONTINUUM_STATES = setdiff(jheem$continuum.of.care, jheem$DIAGNOSED_CONTINUUM_STATES)
 
         jheem = set.tracked.transition.hiv.positive(jheem, name='new_diagnoses',
                                                     transition.dimension = 'continuum',
                                                     from=jheem$UNDIAGNOSED_CONTINUUM_STATES,
-                                                    to=jheem$DIAGNOSED_CONTINUUM_STATES,
+                                                    to=jheem$FIRST_DIAGNOSED_CONTINUUM_STATES,
                                                     keep.dimensions=new.diagnoses.keep.dimensions)
     }
 
