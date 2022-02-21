@@ -163,8 +163,8 @@ run.jheem <- function(jheem,
                       verbose=T,
                       print.warnings=T,
                       max.run.time.seconds=Inf,
-                      atol=1e-03,
-                      rtol=1e-03
+                      atol=1e-06,
+                      rtol=1e-06
                       )
 {
     #-- Check years --#
@@ -284,7 +284,7 @@ run.jheem <- function(jheem,
                                 init=init,
                                 start=start.year,
                                 duration=end.year+1-start.year,
-                                step_size=1)
+                                step_size=1, atol = atol, rtol = rtol)
     end.time = Sys.time()
 
     #see if the check bit was set
