@@ -19,7 +19,8 @@ hydrate.ode.results <- function(ode.results,
     keep.mask = sapply(years, function(year){any(year==keep.years)})
     num.keep = length(keep.years)
 
-    ##-- SET UP DIMENSION NAMES in RV --#
+    ##-- SET UP DIMENSION NAMES in RV --##
+    rv$version = jheem$version
     rv$years = as.numeric(keep.years)
     rv$ages = jheem$age$labels
     rv$races = jheem$race

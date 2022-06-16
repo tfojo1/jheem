@@ -9,11 +9,13 @@ NUM_GENERAL_STRATA = 5
 
 #'@title Initializes a new controller for JHEEM
 #'
+#'@param version An identified of the version, however that is specified by the user. Recorded here for convenience of access later
 #'@param age.cutoffs The cut points for age stratifications in the model, in years. Will result in length(age.cutoffs)-1 strata: age.cutoffs[1] (inclusive) to age.cutoffs[2] (exclusive), age.cutoffs[2] to age.cutoffs[3], ..., age.cutoffs[n-1] to age.cutoffs[n]
 #'
 #'
 #'@export
-initialize.jheem <- function(age.cutoffs=NULL,
+initialize.jheem <- function(version,
+                             age.cutoffs=NULL,
                              race.strata=NULL,
                              subpopulations=NULL,
                              sex.strata=NULL,
@@ -29,7 +31,7 @@ initialize.jheem <- function(age.cutoffs=NULL,
                              new.diagnoses.keep.dimensions=c('age','race','subpopulation','sex','risk')
 )
 {
-    jheem = list()
+    jheem = list(version=version)
 
     ##-- FILL IN MISSING STRATA --##
     if (is.null(age.cutoffs))
