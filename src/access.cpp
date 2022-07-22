@@ -3,6 +3,59 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 IntegerVector do_get_access_indices(IntegerVector dims,
+                                        List to_access)
+{
+    int n_dim = dims.size();
+    int n_before[n_dim];
+    int n_before_access[n_dim];
+    int access_dims[n_dim];
+
+    n_before[0] = 1;
+    for (int i=1; i<n_dim; i++)
+    {
+        n_before[i] = n_before[i-1] * dims[i-1];
+    }
+
+    n_before_access[0] = 1;
+    for (int i=0; i<n_dim; i++)
+    {
+        access_dims[i] = ((IntegerVector) to_access[i]).size();
+        if (i>0)
+            n_before_access[i] = n_before_access[i-1] * access_dims[i-1];
+    }
+    int n = n_before_access[n_dim-1] * access_dims[n_dim-1];
+
+    int dim_index;
+    IntegerVector rv(n);
+
+    //write for the first dimension
+    for (int i_in_d=0; i_in_d<access_dims[0]; i_in_d++)
+        rv[i_in_d] = (((IntegerVector) to_access[0])[i_in_d]-1);
+
+    if (n_dim > 1)
+    {
+        for (int d=1; d<n_dim; d++)
+        {
+            for (int i_in_d=access_dims[d]-1; i_in_d>=0; i_in_d--) //from from back to front so we dont overwrite prior values until were done with them
+            {
+                dim_index = (((IntegerVector) to_access[d])[i_in_d]-1);
+
+                for (int j_before=0; j_before<n_before_access[d]; j_before++)
+                {
+                    rv[n_before_access[d] * i_in_d + j_before] = dim_index * n_before[d] +
+                        rv[j_before]; //the value for the previous indices
+
+                }
+            }
+        }
+    }
+
+    return rv;
+}
+
+
+
+IntegerVector OLD_do_get_access_indices(IntegerVector dims,
                                     List to_access)
 {
     int n_dim = dims.size();
