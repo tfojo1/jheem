@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-NumericVector do_expand_population(NumericVector src,
+NumericVector ATTEMPTED_NEW_INCORRECT_do_expand_population(NumericVector src,
                                    IntegerVector target_dims,
                                    IntegerVector src_to_target_dim_map)
 {
@@ -126,7 +126,7 @@ NumericVector do_expand_population(NumericVector src,
     return (rv);
 }
 
-NumericVector OLD_do_expand_population(NumericVector src,
+NumericVector do_expand_population(NumericVector src,
                                    IntegerVector target_dims,
                                    IntegerVector src_to_target_dim_map)
 {
