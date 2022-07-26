@@ -5,8 +5,10 @@
 \title{Initializes a new controller for JHEEM}
 \usage{
 initialize.jheem(
+  version,
   age.cutoffs = NULL,
   race.strata = NULL,
+  locations = NULL,
   subpopulations = NULL,
   sex.strata = NULL,
   risk.strata = NULL,
@@ -14,13 +16,16 @@ initialize.jheem(
   cd4.strata = NULL,
   hiv.subsets = NULL,
   nonhiv.subsets = NULL,
-  diagnosed.hiv.continuum.states = NULL,
+  first.diagnosed.hiv.continuum.states = NULL,
+  all.diagnosed.hiv.continuum.states = first.diagnosed.hiv.continuum.states,
   transmission.route.names = "sexual",
   verbose = T,
   new.diagnoses.keep.dimensions = c("age", "race", "subpopulation", "sex", "risk")
 )
 }
 \arguments{
+\item{version}{An identified of the version, however that is specified by the user. Recorded here for convenience of access later}
+
 \item{age.cutoffs}{The cut points for age stratifications in the model, in years. Will result in length(age.cutoffs)-1 strata: age.cutoffs[1] (inclusive) to age.cutoffs[2] (exclusive), age.cutoffs[2] to age.cutoffs[3], ..., age.cutoffs[n-1] to age.cutoffs[n]}
 }
 \description{

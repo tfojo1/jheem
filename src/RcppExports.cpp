@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // do_get_access_indices
 IntegerVector do_get_access_indices(IntegerVector dims, List to_access);
 RcppExport SEXP _jheem_do_get_access_indices(SEXP dimsSEXP, SEXP to_accessSEXP) {
@@ -125,16 +130,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// do_expand_population
-NumericVector do_expand_population(NumericVector src, IntegerVector target_dims, IntegerVector src_to_target_dim_map);
-RcppExport SEXP _jheem_do_expand_population(SEXP srcSEXP, SEXP target_dimsSEXP, SEXP src_to_target_dim_mapSEXP) {
+// ATTEMPTED_NEW_INCORRECT_do_expand_population
+NumericVector ATTEMPTED_NEW_INCORRECT_do_expand_population(NumericVector src, IntegerVector target_dims, IntegerVector src_to_target_dim_map);
+RcppExport SEXP _jheem_ATTEMPTED_NEW_INCORRECT_do_expand_population(SEXP srcSEXP, SEXP target_dimsSEXP, SEXP src_to_target_dim_mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type src(srcSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type target_dims(target_dimsSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type src_to_target_dim_map(src_to_target_dim_mapSEXP);
-    rcpp_result_gen = Rcpp::wrap(do_expand_population(src, target_dims, src_to_target_dim_map));
+    rcpp_result_gen = Rcpp::wrap(ATTEMPTED_NEW_INCORRECT_do_expand_population(src, target_dims, src_to_target_dim_map));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -179,7 +184,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_jheem_do_marginal_sums_hiv_positive", (DL_FUNC) &_jheem_do_marginal_sums_hiv_positive, 3},
     {"_jheem_do_marginal_sums_hiv_negative", (DL_FUNC) &_jheem_do_marginal_sums_hiv_negative, 3},
     {"_jheem_do_marginal_sums_general", (DL_FUNC) &_jheem_do_marginal_sums_general, 3},
-    {"_jheem_do_expand_population", (DL_FUNC) &_jheem_do_expand_population, 3},
+    {"_jheem_ATTEMPTED_NEW_INCORRECT_do_expand_population", (DL_FUNC) &_jheem_ATTEMPTED_NEW_INCORRECT_do_expand_population, 3},
     {"_jheem_pull_time_varying_parameters", (DL_FUNC) &_jheem_pull_time_varying_parameters, 2},
     {"_jheem_test_pull_elem_a", (DL_FUNC) &_jheem_test_pull_elem_a, 1},
     {"_jheem_print_vector", (DL_FUNC) &_jheem_print_vector, 1},
