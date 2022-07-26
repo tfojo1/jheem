@@ -17,6 +17,7 @@ NUM_GENERAL_STRATA = 5
 initialize.jheem <- function(version,
                              age.cutoffs=NULL,
                              race.strata=NULL,
+                             locations=NULL,
                              subpopulations=NULL,
                              sex.strata=NULL,
                              risk.strata=NULL,
@@ -38,6 +39,8 @@ initialize.jheem <- function(version,
         age.cutoffs=c(0,Inf)
     if (is.null(race.strata))
         race.strata='all_races'
+    if (is.null(locations))
+        locations = 'all_locations'
     if (is.null(subpopulations))
         subpopulations = 'all_subpopulations'
     if (is.null(sex.strata))
@@ -55,6 +58,8 @@ initialize.jheem <- function(version,
 
     if (class(race.strata) != 'character' || any(is.na(race.strata)) || length(race.strata)==0)
         stop("The race.strata argument must be a character vector with at least one element and no NA values")
+    if (class(locations) != 'character' || any(is.na(locations)) || length(locations)==0)
+        stop("The locations argument must be a character vector with at least one element and no NA values")
     if (class(subpopulations) != 'character' || any(is.na(subpopulations)) || length(subpopulations)==0)
         stop("The subpopulations argument must be a character vector with at least one element and no NA values")
     if (class(sex.strata) != 'character' || any(is.na(sex.strata)) || length(sex.strata)==0)
@@ -88,6 +93,7 @@ initialize.jheem <- function(version,
 
     ##-- OTHER STRATA --##
     jheem$race = race.strata
+    jhem$locations = locations
     jheem$subpopulations = subpopulations
     jheem$sex = sex.strata
     jheem$risk.strata = risk.strata

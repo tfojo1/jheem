@@ -193,11 +193,13 @@ run.jheem <- function(jheem,
     }
     else
     {
-        #make sure the prior run includes the new start year
+        # make sure the prior run includes the new start year
         if (!any(prior.run.results$years==(start.year-1)))
             stop(paste0("In order to start the new model at ", start.year,
                         " based off of previous run results, the previous run must include the year ",
                         (start.year-1), " (ie, the year leading into ", start.year, "), but it does not"))
+
+        # check dimension compatibility
 
         #Load initial states
         hiv.negative.population = prior.run.results$hiv.negative[as.character(start.year-1),,,,,,]

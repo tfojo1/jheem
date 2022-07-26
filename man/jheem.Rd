@@ -4,6 +4,3 @@
 \name{jheem}
 \alias{jheem}
 \title{jheem: A package}
-\description{
-jheem: A package
-}

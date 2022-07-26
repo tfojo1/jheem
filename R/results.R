@@ -6,7 +6,7 @@ hydrate.ode.results <- function(ode.results,
                                 keep.years,
                                 result.year.minus.ode.year=-1)
 {
-    ##-- SET UP THE RV and INDEX --##
+    ##-- SET UP INDEX --##
     rv = list()
     index = 1
 
@@ -19,20 +19,8 @@ hydrate.ode.results <- function(ode.results,
     keep.mask = sapply(years, function(year){any(year==keep.years)})
     num.keep = length(keep.years)
 
-    ##-- SET UP DIMENSION NAMES in RV --##
-    rv$version = jheem$version
-    rv$years = as.numeric(keep.years)
-    rv$ages = jheem$age$labels
-    rv$races = jheem$race
-    rv$subpopulations = jheem$subpopulations
-    rv$sexes = jheem$sex
-    rv$risks = jheem$risk.strata
-    rv$non.hiv.subsets = jheem$nonhiv.subsets
-    rv$continuum = jheem$continuum.of.care
-    rv$cd4 = jheem$cd4.strata
-    rv$hiv.subsets = jheem$hiv.subsets
-    rv$first.diagnosed.continuum.states = jheem$FIRST_DIAGNOSED_CONTINUUM_STATES
-    rv$diagnosed.continuum.states = jheem$DIAGNOSED_CONTINUUM_STATES
+    ##-- SET UP THE RV --##
+    rv = initialize.jheem.results(jheem, years=keep.years)
 
     ##-- SET UP DIMNAMES --##
     dimnames.hiv.positive = c(list(year=keep.years), get.dimnames.hiv(jheem))
@@ -149,6 +137,32 @@ hydrate.ode.results <- function(ode.results,
     #rv = recategorize.for.cdc(rv)
 
     ##-- RETURN IT --##
+
+    rv
+}
+
+# sets up the metadata for a jheem.results object
+# The actual simulation data will still need to be populated
+initialize.jheem.results <- function(jheem, years)
+{
+    rv = list()
+
+    ##-- SET UP DIMENSION NAMES in RV --##
+    rv$version = jheem$version
+    rv$years = as.numeric(years)
+    rv$ages = jheem$age$labels
+    rv$races = jheem$race
+    rv$locations = jheem$locations
+    rv$subpopulations = jheem$subpopulations
+    rv$sexes = jheem$sex
+    rv$risks = jheem$risk.strata
+    rv$non.hiv.subsets = jheem$nonhiv.subsets
+    rv$continuum = jheem$continuum.of.care
+    rv$cd4 = jheem$cd4.strata
+    rv$hiv.subsets = jheem$hiv.subsets
+    rv$first.diagnosed.continuum.states = jheem$FIRST_DIAGNOSED_CONTINUUM_STATES
+    rv$diagnosed.continuum.states = jheem$DIAGNOSED_CONTINUUM_STATES
+
 
     class(rv) = 'jheem.results'
     rv

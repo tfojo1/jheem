@@ -13,8 +13,8 @@ run.jheem(
   verbose = T,
   print.warnings = T,
   max.run.time.seconds = Inf,
-  atol = 0.001,
-  rtol = 0.001
+  atol = 1e-06,
+  rtol = 1e-06
 )
 }
 \arguments{
