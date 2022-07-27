@@ -168,6 +168,38 @@ initialize.jheem.results <- function(jheem, years)
     rv
 }
 
+#'@description Get a dimnames list for dimensions used in the results arrays
+#'
+#'@param jheem.results The results object
+#'@param dimensions The names of the dimension to get dimnames for. If null, returns all possible result dimnames
+#'
+#'@export
+get.jheem.results.dimnames <- function(jheem.results,
+                                        dimensions=NULL)
+{
+    all.dim.names = list(
+        year=jheem.results$years,
+        age=jheem.results$ages,
+        race=jheem.results$races,
+        #location=jheem.results$location,
+        subpopulation=jheem.results$subpopulation,
+        sex=jheem.results$sexes,
+        risk=jheem.results$risks,
+        non.hiv.subset=jheem.results$non.hiv.subsets,
+        continuum=jheem.results$continuum,
+        cd4=jheem.results$cd4,
+        hiv.subset=jheem.results$hiv.subsets
+    )
+
+    if (is.null(dimensions))
+        all.dim.names
+    else if (length(setdiff(dimensions, names(all.dim.names)))>0)
+        stop(paste0("Invalid dimension(s) for JHEEM results: ",
+                    paste0("'", setdiff(dimensions, names(all.dim.names)), "'", collapse=', ')))
+    else
+        all.dim.names[dimensions]
+}
+
 CDC.SEX = c('male','female')
 CDC.RISK = c('msm','idu', 'msm_idu', 'heterosexual')
 #'@export
@@ -381,6 +413,11 @@ expand.jheem.results <- function(results, new.jheem)
 
                 old.dimnames = dimnames(elem)
                 new.dimnames.for.elem = dimnames.superset[names(old.dimnames)]
+
+                # to account for dimensions we have collapsed
+                length.one = sapply(old.dimnames, length)==1
+                new.dimnames.for.elem[length.one] = old.dimnames[length.one]
+
                 new.elem = array(0, dim=sapply(new.dimnames.for.elem, length), dimnames=new.dimnames.for.elem)
 
                 access(new.elem,

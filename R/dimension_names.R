@@ -50,6 +50,8 @@ get.dimnames <- function(jheem,
     rv[mask]
 }
 
+
+
 get.dimnames.by.name <- function(jheem,
                                  dim.name.names)
 {

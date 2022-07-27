@@ -93,7 +93,7 @@ initialize.jheem <- function(version,
 
     ##-- OTHER STRATA --##
     jheem$race = race.strata
-    jhem$locations = locations
+    jheem$locations = locations
     jheem$subpopulations = subpopulations
     jheem$sex = sex.strata
     jheem$risk.strata = risk.strata
