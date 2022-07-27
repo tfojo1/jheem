@@ -2,7 +2,6 @@
 
 S3method(subset,jheem.results)
 export("access<-")
-export(NOT.USING.expand.jheem.results)
 export(access)
 export(combine.jheem.results)
 export(create.birth.proportions.from.population)
