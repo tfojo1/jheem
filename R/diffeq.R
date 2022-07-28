@@ -772,7 +772,7 @@ check.na.parameters <- function(parameters)
         for (i in 1:n.val)
         {
             val = parameters$time.varying.parameters[[name]]$values[[i]]
-            is.multiple = class(val)=='list' || is.null(length(val)) || length(val) > 1
+            is.multiple = is.list(val) || is.null(length(val)) || length(val) > 1
 
             if (any(is.na(val)))
                 stop("The ",
