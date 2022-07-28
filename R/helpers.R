@@ -101,7 +101,8 @@ list.equals <- function(x, y)
         !is.null(x) && !is.null(y) &&
         length(x)==length(y) &&
         sapply(1:length(x), function(i){
-            all(x[[i]]==y[[i]])
+            length(x[[i]]) == length(y[[i]]) &&
+                all(x[[i]] == y[[i]])
         })
 }
 
