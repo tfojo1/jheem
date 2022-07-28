@@ -100,10 +100,10 @@ list.equals <- function(x, y)
     else
         !is.null(x) && !is.null(y) &&
         length(x)==length(y) &&
-        sapply(1:length(x), function(i){
+        all(sapply(1:length(x), function(i){
             length(x[[i]]) == length(y[[i]]) &&
                 all(x[[i]] == y[[i]])
-        })
+        }))
 }
 
 vector.equals <- function(x, y)
