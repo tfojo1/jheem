@@ -66,9 +66,22 @@ expand.population <- function(source.population,
         stop(non.conforming.error)
     }
 
-    rv = do_expand_population(src=source.population,
-                                target_dims=sapply(target.dim.names, length),
-                                src_to_target_dim_map=source.to.target.dims-1)
+    if (is.numeric(source.population))
+        rv = do_expand_population(src=source.population,
+                                  target_dims=sapply(target.dim.names, length),
+                                  src_to_target_dim_map=source.to.target.dims-1)
+    else if (is.logical(source.population))
+    {
+        rv = as.logical(do_expand_population(src=source.population,
+                                    target_dims=sapply(target.dim.names, length),
+                                    src_to_target_dim_map=source.to.target.dims-1))
+    }
+    else if (is.character(source.population))
+        rv = do_expand_population_character(src=source.population,
+                                            target_dims=sapply(target.dim.names, length),
+                                            src_to_target_dim_map=source.to.target.dims-1)
+    else
+        stop("source.population must contain either numeric, logical, character values")
 
     dim(rv) = sapply(target.dim.names, length)
     dimnames(rv) = target.dim.names

@@ -29,6 +29,10 @@ do_expand_population <- function(src, target_dims, src_to_target_dim_map) {
     .Call(`_jheem_do_expand_population`, src, target_dims, src_to_target_dim_map)
 }
 
+do_expand_population_character <- function(src, target_dims, src_to_target_dim_map) {
+    .Call(`_jheem_do_expand_population_character`, src, target_dims, src_to_target_dim_map)
+}
+
 pull_time_varying_parameters <- function(param_sets, time) {
     .Call(`_jheem_pull_time_varying_parameters`, param_sets, time)
 }

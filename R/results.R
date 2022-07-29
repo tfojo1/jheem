@@ -378,20 +378,97 @@ subset.jheem.results <- function(results, years)
 
 #'@title Expand JHEEM Results to Contain New Dimensions
 #'
-#'@description Expands the components of a JHEEM Results object to have new dimensions (the values in these new dimensions are set to zero)
+#'@description Expands the components of a JHEEM Results object to have new dimensions (the values in these new dimensions are set to default.value)
 #'
 #'@param results An object of class jheem.results
 #'@param new.jheem An object of class jheem that describes the new dimensions. Each dimension (age, race, etc.) must be a superset of the dimensions in the results object
+#'@param default.value The value to fill in to new dimensions
 #'
 #'@export
-expand.jheem.results <- function(results, new.jheem)
+expand.jheem.results <- function(results, new.jheem, default.value=0)
 {
+    # Set up the dim names
     all.dimnames = all.dimnames.from = all.dimnames.to =  get.dimnames.all(new.jheem)
     names(all.dimnames.from) = paste0(names(all.dimnames), '.from')
     names(all.dimnames.to) = paste0(names(all.dimnames), '.to')
     all.dimnames = c(all.dimnames, all.dimnames.from, all.dimnames.to)
     all.dimnames = c(list(year=as.character(results$year)), all.dimnames)
 
+    # Define a conversion sub-function so we can apply to the main results and the tracked.transitions
+    conversion.fn <- function(elem)
+    {
+        # set up the dimnames for the expanded element
+        old.dimnames = dimnames(elem)
+        new.dimnames.for.elem = all.dimnames[names(old.dimnames)]
+
+        # to account for dimensions we have collapsed
+        length.one = sapply(old.dimnames, length)==1
+        new.dimnames.for.elem[length.one] = old.dimnames[length.one]
+
+        # set up the new elem
+        new.elem = array(default.value,
+                         dim=sapply(new.dimnames.for.elem, length),
+                         dimnames=new.dimnames.for.elem)
+
+        # fill it in with values from the old elem
+        access(new.elem,
+               year=old.dimnames[['year']],
+               age=old.dimnames[['age']],
+               race=old.dimnames[['race']],
+               subpopulation=old.dimnames[['subpopulation']],
+               sex=old.dimnames[['sex']],
+               risk=old.dimnames[['risk']],
+               non.hiv.subset=old.dimnames[['non.hiv.subset']],
+               continuum=old.dimnames[['continuum']],
+               cd4=old.dimnames[['cd4']],
+               hiv.subset=old.dimnames[['hiv.subset']],
+               age.from=old.dimnames[['age.from']],
+               race.from=old.dimnames[['race.from']],
+               subpopulation.from=old.dimnames[['subpopulation.from']],
+               sex.from=old.dimnames[['sex.from']],
+               risk.from=old.dimnames[['risk.from']],
+               non.hiv.subset.from=old.dimnames[['non.hiv.subset.from']],
+               continuum.from=old.dimnames[['continuum.from']],
+               cd4.from=old.dimnames[['cd4.from']],
+               hiv.subset.from=old.dimnames[['hiv.subset.from']],
+               age.to=old.dimnames[['age.to']],
+               race.to=old.dimnames[['race.to']],
+               subpopulation.to=old.dimnames[['subpopulation.to']],
+               sex.to=old.dimnames[['sex.to']],
+               risk.to=old.dimnames[['risk.to']],
+               non.hiv.subset.to=old.dimnames[['non.hiv.subset.to']],
+               continuum.to=old.dimnames[['continuum.to']],
+               cd4.to=old.dimnames[['cd4.to']],
+               hiv.subset.to=old.dimnames[['hiv.subset.to']]) = elem
+
+        new.elem
+    }
+
+    # Fill in the main results
+    elem.names.to.convert = names(results)[sapply(results, is.array)]
+    for (elem.name in elem.names.to.convert)
+        results[[elem.name]] = conversion.fn(results[[elem.name]])
+
+    # Fill in the tracked transitions
+    for (elem.name in names(results$tracked.transitions))
+        results$tracked.transitions[[elem.name]] = conversion.fn(results$tracked.transitions[[elem.name]])
+
+    # Overwrite with the metadata for the new results
+    # (write into the old one to preserve its attributes)
+    skeleton.for.new = initialize.jheem.results(new.jheem, results$years)
+    results[names(skeleton.for.new)] = skeleton.for.new
+
+    # Return
+    results
+}
+
+OLD.expand.jheem.results <- function(results, new.jheem)
+{
+    all.dimnames = all.dimnames.from = all.dimnames.to =  get.dimnames.all(new.jheem)
+    names(all.dimnames.from) = paste0(names(all.dimnames), '.from')
+    names(all.dimnames.to) = paste0(names(all.dimnames), '.to')
+    all.dimnames = c(all.dimnames, all.dimnames.from, all.dimnames.to)
+    all.dimnames = c(list(year=as.character(results$year)), all.dimnames)
 
     conversion.fn <- function(rr, is.transition=F)
     {

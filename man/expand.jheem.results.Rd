@@ -4,13 +4,15 @@
 \alias{expand.jheem.results}
 \title{Expand JHEEM Results to Contain New Dimensions}
 \usage{
-expand.jheem.results(results, new.jheem)
+expand.jheem.results(results, new.jheem, default.value = 0)
 }
 \arguments{
 \item{results}{An object of class jheem.results}
 
 \item{new.jheem}{An object of class jheem that describes the new dimensions. Each dimension (age, race, etc.) must be a superset of the dimensions in the results object}
+
+\item{default.value}{The value to fill in to new dimensions}
 }
 \description{
-Expands the components of a JHEEM Results object to have new dimensions (the values in these new dimensions are set to zero)
+Expands the components of a JHEEM Results object to have new dimensions (the values in these new dimensions are set to default.value)
 }

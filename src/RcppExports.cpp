@@ -143,6 +143,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// do_expand_population_character
+CharacterVector do_expand_population_character(CharacterVector src, IntegerVector target_dims, IntegerVector src_to_target_dim_map);
+RcppExport SEXP _jheem_do_expand_population_character(SEXP srcSEXP, SEXP target_dimsSEXP, SEXP src_to_target_dim_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type src(srcSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type target_dims(target_dimsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type src_to_target_dim_map(src_to_target_dim_mapSEXP);
+    rcpp_result_gen = Rcpp::wrap(do_expand_population_character(src, target_dims, src_to_target_dim_map));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pull_time_varying_parameters
 List pull_time_varying_parameters(List param_sets, double time);
 RcppExport SEXP _jheem_pull_time_varying_parameters(SEXP param_setsSEXP, SEXP timeSEXP) {
@@ -185,6 +198,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_jheem_do_marginal_sums_hiv_negative", (DL_FUNC) &_jheem_do_marginal_sums_hiv_negative, 3},
     {"_jheem_do_marginal_sums_general", (DL_FUNC) &_jheem_do_marginal_sums_general, 3},
     {"_jheem_do_expand_population", (DL_FUNC) &_jheem_do_expand_population, 3},
+    {"_jheem_do_expand_population_character", (DL_FUNC) &_jheem_do_expand_population_character, 3},
     {"_jheem_pull_time_varying_parameters", (DL_FUNC) &_jheem_pull_time_varying_parameters, 2},
     {"_jheem_test_pull_elem_a", (DL_FUNC) &_jheem_test_pull_elem_a, 1},
     {"_jheem_print_vector", (DL_FUNC) &_jheem_print_vector, 1},
