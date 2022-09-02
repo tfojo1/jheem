@@ -130,6 +130,7 @@ access <- function(arr,
 
 #Helper
 # returns a vector of indices where the dimensions listed in access.dims match
+#'@export
 get.access.indices <- function(arr, access.dims)
 {
     if (length(access.dims)==0)
