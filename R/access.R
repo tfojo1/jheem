@@ -131,20 +131,20 @@ access <- function(arr,
 #Helper
 # returns a vector of indices where the dimensions listed in access.dims match
 #'@export
-get.access.indices <- function(arr, access.dims)
+get.access.indices <- function(arr, access.dims, dim.names=dimnames(arr))
 {
     if (length(access.dims)==0)
         return (rep(T, prod(dim(arr))))
 
     #map access dims to numbers
     access.names = names(access.dims)
-    to.access = lapply(names(dimnames(arr)), function(name){
+    to.access = lapply(names(dim.names), function(name){
         if (any(access.names==name))
         {
             if (is(access.dims[[name]],'character'))
             {
                 indices = 1:(dim(arr)[name])
-                names(indices) = dimnames(arr)[[name]]
+                names(indices) = dim.names[[name]]
                 indices[access.dims[[name]]]
             }
             else if (is(access.dims[[name]],'logical'))
