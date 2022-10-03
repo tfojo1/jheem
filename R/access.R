@@ -133,8 +133,9 @@ access <- function(arr,
 #'@export
 get.access.indices <- function(arr, access.dims, dim.names=dimnames(arr))
 {
+    dims = sapply(dim.names, length)
     if (length(access.dims)==0)
-        return (rep(T, prod(dim(arr))))
+        return (rep(T, prod(dims)))
 
     #map access dims to numbers
     access.names = names(access.dims)
@@ -143,24 +144,24 @@ get.access.indices <- function(arr, access.dims, dim.names=dimnames(arr))
         {
             if (is(access.dims[[name]],'character'))
             {
-                indices = 1:(dim(arr)[name])
+                indices = 1:(dims[name])
                 names(indices) = dim.names[[name]]
                 indices[access.dims[[name]]]
             }
             else if (is(access.dims[[name]],'logical'))
             {
-                indices = 1:(dim(arr)[name])
+                indices = 1:(dims[name])
                 indices[access.dims[[name]]]
             }
             else
                 as.integer(access.dims[[name]])
         }
         else
-            1:dim(arr)[name]
+            1:dims[name]
     })
 
     #call the cpp helper
-    do_get_access_indices(dims=dim(arr),
+    do_get_access_indices(dims=dims,
                           to_access=to.access) + 1
 }
 
